@@ -116,6 +116,9 @@ configure_file(libccd/src/ccd/precision.h.in include/ccd/precision.h)
 configure_file(include/ode/precision.h.in include/ode/precision.h)
 
 set(ODE_VERSION ${VERSION})
+set(ODE_VERSION_MAJOR ${VERSION_MAJOR})
+set(ODE_VERSION_MINOR ${VERSION_MINOR})
+set(ODE_VERSION_PATCH ${VERSION_PATCH})
 
 configure_file(include/ode/version.h.in include/ode/version.h)
 
