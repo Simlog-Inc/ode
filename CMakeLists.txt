@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.27)
 
 project(ODE)
 
@@ -23,6 +23,8 @@ option(ODE_WITH_LIBCCD "Use libccd for handling some collision tests absent in O
 option(ODE_WITH_OPCODE "Use old OPCODE trimesh-trimesh collider." ON)
 option(ODE_WITH_OU "Use TLS for global caches (allows threaded collision checks for separated spaces)." OFF)
 option(ODE_WITH_TESTS "Builds the unit test application." ON)
+option(SIMLOG_DISABLE_LIB_SPECIAL_NAME "[Simlog] Disable the special name given to the .lib, based on the float size." ON)
+option(SIMLOG_USE_CUSTOM_POSTFIX "[Simlog] Let us use our own post-fix instead those supplied by ODE." ON)
 
 cmake_dependent_option(ODE_WITH_LIBCCD_BOX_CYL "Use libccd for box-cylinder." ON "ODE_WITH_LIBCCD" OFF)
 cmake_dependent_option(ODE_WITH_LIBCCD_CAP_CYL "Use libccd for capsule-cylinder." ON "ODE_WITH_LIBCCD" OFF)
@@ -489,20 +491,33 @@ if(WIN32)
 	if(BUILD_SHARED_LIBS)
 		set_target_properties(ODE PROPERTIES DEBUG_POSTFIX d)
 	else()
-		set_target_properties(
-			ODE
-			PROPERTIES
-			DEBUG_POSTFIX sd
-			MINSIZEREL_POSTFIX s
-			RELEASE_POSTFIX s
-			RELWITHDEBINFO_POSTFIX s
-		)
+		if(SIMLOG_USE_CUSTOM_POSTFIX)
+			set_target_properties(
+				ODE
+				PROPERTIES
+				DEBUG_POSTFIX d
+				MINSIZEREL_POSTFIX s
+				RELWITHDEBINFO_POSTFIX rd
+			)
+			# no postfix for RELEASE_POSTFIX
+		else()
+			set_target_properties(
+				ODE
+				PROPERTIES
+				DEBUG_POSTFIX sd
+				MINSIZEREL_POSTFIX s
+				RELEASE_POSTFIX s
+				RELWITHDEBINFO_POSTFIX s
+			)
+		endif()
 	endif()
 	
-	if(ODE_DOUBLE_PRECISION)
-		set_target_properties(ODE PROPERTIES OUTPUT_NAME ode_double)
-	else()
-		set_target_properties(ODE PROPERTIES OUTPUT_NAME ode_single)
+	if(NOT SIMLOG_DISABLE_LIB_SPECIAL_NAME)
+		if(ODE_DOUBLE_PRECISION)
+			set_target_properties(ODE PROPERTIES OUTPUT_NAME ode_double)
+		else()
+			set_target_properties(ODE PROPERTIES OUTPUT_NAME ode_single)
+		endif()
 	endif()
 endif()
 
