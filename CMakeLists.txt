@@ -256,6 +256,7 @@ set(
 	ode/src/plane.cpp
 	ode/src/quickstep.cpp
 	ode/src/quickstep.h
+	ode/src/random.h
 	ode/src/ray.cpp
 	ode/src/resource_control.cpp
 	ode/src/resource_control.h
@@ -906,6 +907,7 @@ if(ODE_WITH_TESTS)
 		tests/joint.cpp
 		tests/main.cpp
 		tests/odemath.cpp
+		tests/random.cpp
 		tests/joints/amotor.cpp
 		tests/joints/ball.cpp
 		tests/joints/dball.cpp
