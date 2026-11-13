@@ -553,6 +553,51 @@ ODE_API void dWorldSetQuickStepW (dWorldID, dReal over_relaxation);
  */
 ODE_API dReal dWorldGetQuickStepW (dWorldID);
 
+/**
+ * @brief The modes of dWorldSetQuickStepRandomReorderingMode().
+ * @ingroup world
+ */
+#define dWORLDQUICKSTEP_RANDOMREORDERING_SHARED     0
+#define dWORLDQUICKSTEP_RANDOMREORDERING_PER_ISLAND 1
+
+/**
+ * @brief Set where QuickStep takes the random numbers that reorder each
+ *        island's constraints.
+ * @ingroup world
+ * @remarks
+ * QuickStep solves an island's constraints in an order it shuffles every few
+ * iterations, with random numbers; the mode sets where they come from.
+ *
+ * With dWORLDQUICKSTEP_RANDOMREORDERING_SHARED, the default, the islands draw
+ * from dRand()'s sequence itself. Stepped by one thread, they draw in a fixed
+ * order; stepped by several threads, which island gets which values depends
+ * on the threads' timing.
+ *
+ * With dWORLDQUICKSTEP_RANDOMREORDERING_PER_ISLAND, each dWorldQuickStep()
+ * draws one value with dRand() and gives each island its own sequence,
+ * derived from that value and the island's place in the order in which the
+ * step finds the islands. The values an island gets then depend neither on
+ * the number of threads nor on their timing. Each step that succeeds
+ * advances dRand()'s sequence by exactly one value; a step that fails draws
+ * nothing. The results differ from the shared mode's.
+ *
+ * In either mode, several LCP solving threads per island
+ * (dWorldSetSteppingThreadingParameters()) make the results depend on the
+ * threads' timing.
+ * @param mode dWORLDQUICKSTEP_RANDOMREORDERING_SHARED or
+ *             dWORLDQUICKSTEP_RANDOMREORDERING_PER_ISLAND
+ */
+ODE_API void dWorldSetQuickStepRandomReorderingMode (dWorldID, int mode);
+
+/**
+ * @brief Get where QuickStep takes the random numbers that reorder each
+ *        island's constraints.
+ * @ingroup world
+ * @returns dWORLDQUICKSTEP_RANDOMREORDERING_SHARED or
+ *          dWORLDQUICKSTEP_RANDOMREORDERING_PER_ISLAND
+ */
+ODE_API int dWorldGetQuickStepRandomReorderingMode (dWorldID);
+
 /* World contact parameter functions */
 
 /**
