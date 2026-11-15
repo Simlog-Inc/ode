@@ -110,6 +110,7 @@ struct dxDampingParameters {
 struct dxQuickStepParameters {
     int num_iterations;		// number of SOR iterations to perform
     dReal w;			// the SOR over-relaxation parameter
+    int random_reordering_mode;	// a dWORLDQUICKSTEP_RANDOMREORDERING_* value (quickstep.cpp)
 
     dxQuickStepParameters() {}
     explicit dxQuickStepParameters(void *);

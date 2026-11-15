@@ -70,7 +70,8 @@ dxDampingParameters::dxDampingParameters(void *):
 
 dxQuickStepParameters::dxQuickStepParameters(void *):
     num_iterations(20),
-    w(REAL(1.3))
+    w(REAL(1.3)),
+    random_reordering_mode(dWORLDQUICKSTEP_RANDOMREORDERING_SHARED)
 {
 }
 
